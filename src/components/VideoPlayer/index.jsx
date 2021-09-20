@@ -1,5 +1,6 @@
 import clsx from "clsx";
-import { useRef, useState } from "react";
+import { useRef } from "react";
+import useIntersectionVideoPlayer from "../../hooks/useIntersectionVideoPlayer";
 import VideosDescription from "../VideoDescription";
 import styles from "./styles.module.css";
 import VideosPleyerActions from "./VideosPleyerActions";
@@ -10,19 +11,10 @@ export default function VideoPlayer({
   username,
   description,
   songTitle,
+  avatar,
 }) {
-
-  const [playing, setPlaying] = useState(false);
   const video = useRef();
-
-  const handlePlay = () => {
-    const { current: videoEl } = video;
-    playing 
-      ? videoEl.pause() 
-      : videoEl.play();
-        setPlaying(!playing);
-};
-
+  const { playing, handlePlay } = useIntersectionVideoPlayer({ video });
 
   const playerCassName = clsx(styles.player, {
     [styles.hidden]: playing,
@@ -39,7 +31,7 @@ export default function VideoPlayer({
         onClick={handlePlay}
       />
       <i className={playerCassName} onClick={handlePlay} />
-      <VideosPleyerActions />
+      <VideosPleyerActions avatar={avatar} username={username} />
       <VideosDescription
         albumunCover={albumunCover}
         username={username}

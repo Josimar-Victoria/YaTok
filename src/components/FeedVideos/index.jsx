@@ -8,7 +8,6 @@ export default function FeedVideos() {
 
   useEffect(() => {
     getVideos().then(([error, videos]) => {
-      console.log(videos);
       if (error) return setError(error);
       setVideos(videos);
     });
@@ -17,9 +16,13 @@ export default function FeedVideos() {
 
   return videos.map((video) => {
     const { user = {} } = video;
+    const { avatar, username } = user
     return (
       <div key={video.id} className={styles.item}>
-        <VideoPlayer {...video} username={user.username} />
+        <VideoPlayer 
+        {...video} 
+        avatar={avatar}
+        username={username} />
       </div>
     );
   });
