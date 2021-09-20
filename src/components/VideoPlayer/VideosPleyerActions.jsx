@@ -7,11 +7,13 @@ export default function VideosPleyerActions({
   shares = 2235,
   likes = 12119,
   comments = 908,
+  avatar,
+  username
 }) {
-    const handleLikes = () => {
-        alert("like")
+    const handleLike = () => {
+        window.alert("like")
     }
-    const handleComments = () => {
+    const handleComment = () => {
         alert("comments")
     }
     const handleShare = () => {
@@ -19,20 +21,26 @@ export default function VideosPleyerActions({
     }
   return (
     <aside className={styles.actions}>
-      <button onClick={handleLikes} className={styles.action}>
-        <Heart />
-        <span title="like">{likes}</span>
-      </button>
 
-      <button onClick={handleComments} className={styles.action}>
-        <Comment />
-        <span title="comments">{comments}</span>
-      </button>
+    <div className={styles.user}>
+      <img alt={username} src={avatar} />
+      <img src='https://sf16-scmcdn-va.ibytedtos.com/goofy/tiktok/web/node/_next/static/images/test-2e6dd40439e72f09a8193e27cb3e0c51.svg' width='24' />
+    </div>
 
-      <button onClick={handleShare} className={styles.action}>
-        <Share />
-        <span title="shares">{shares}</span>
-      </button>
-    </aside>
+    <button onClick={handleLike} className={styles.action}>
+      <Heart width='45' />
+      <span title='like'>{likes}</span>
+    </button>
+
+    <button onClick={handleComment} className={styles.action}>
+      <Comment width='45' />
+      <span title='comments'>{comments}</span>
+    </button>
+
+    <button onClick={handleShare} className={styles.action}>
+      <Share width='45' />
+      <span title='shares'>{shares}</span>
+    </button>
+  </aside>
   );
 }

@@ -6,24 +6,22 @@ import VideosPleyerActions from "./VideosPleyerActions";
 
 export default function VideoPlayer({
   src,
-  albmunCover,
-  author,
+  albumunCover,
+  username,
   description,
   songTitle,
 }) {
-  console.log({ src });
+
   const [playing, setPlaying] = useState(false);
   const video = useRef();
 
   const handlePlay = () => {
     const { current: videoEl } = video;
     playing 
-    ? videoEl.pause() 
-    : videoEl.play();
-    setPlaying(!playing);
-  };
-
-  console.log(playing);
+      ? videoEl.pause() 
+      : videoEl.play();
+        setPlaying(!playing);
+};
 
 
   const playerCassName = clsx(styles.player, {
@@ -43,8 +41,8 @@ export default function VideoPlayer({
       <i className={playerCassName} onClick={handlePlay} />
       <VideosPleyerActions />
       <VideosDescription
-        albmunCover={albmunCover}
-        author={author}
+        albumunCover={albumunCover}
+        username={username}
         description={description}
         songTitle={songTitle}
       />

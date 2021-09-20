@@ -1,14 +1,26 @@
 import VideoPlayer from "../VideoPlayer";
-import VIDEOS from "../../util/pruebas.json";
 import styles from "./styles.module.css";
+import { getVideos } from "../../service";
+import { useEffect, useState } from "react";
 export default function FeedVideos() {
-  return (
-    <section>
-      {VIDEOS.map((videos) => (
-        <div key={videos.id} className={styles.item}>
-          <VideoPlayer {...videos} />
-        </div>
-      ))}
-    </section>
-  );
+  const [videos, setVideos] = useState([]);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    getVideos().then(([error, videos]) => {
+      console.log(videos);
+      if (error) return setError(error);
+      setVideos(videos);
+    });
+  }, []);
+  if (error) return <span>{error}</span>;
+
+  return videos.map((video) => {
+    const { user = {} } = video;
+    return (
+      <div key={video.id} className={styles.item}>
+        <VideoPlayer {...video} username={user.username} />
+      </div>
+    );
+  });
 }
