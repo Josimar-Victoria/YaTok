@@ -1,26 +1,22 @@
 import clsx from "clsx";
 import React, { useEffect, useState } from "react";
 import { useDropzone } from "react-dropzone";
-import { uploadVIdeo } from "../../service";
+import { publishVideo, uploadVIdeo } from "../../service";
 import styles from "./styles.module.css";
 export default function Upload() {
   const [uploading, setUploading] = useState(false);
   const [uploaded, setUploaded] = useState(null);
 
   const onDrop = async (files) => {
-    const [file] = files
-    setUploading(true)
-    const [error, fileUrl] = await uploadVIdeo({ videoFile: file })
-    if (error) return console.error(error)
-    console.log(fileUrl)
-    setUploaded(fileUrl)
+    const [file] = files;
+    setUploading(true);
+    const [error, fileUrl] = await uploadVIdeo({ videoFile: file });
+    if (error) return console.error(error);
+    console.log(fileUrl);
+    setUploaded(fileUrl);
   };
-  const { 
-      isDragAccept, 
-      isDragReject, 
-      getRootProps, 
-      getInputProps 
-    } = useDropzone({
+  const { isDragAccept, isDragReject, getRootProps, getInputProps } =
+    useDropzone({
       disabled: uploading || uploaded,
       maxFiles: 1,
       accept: "video/mp4,video/x-m4v,video/*",
@@ -35,12 +31,16 @@ export default function Upload() {
     [styles.uploaded]: uploaded,
     [styles.uploading && !styles.uploaded]: uploading,
     [styles.dndReject]: isDragReject,
-    [styles.dndAccept]: isDragAccept
-  })
+    [styles.dndAccept]: isDragAccept,
+  });
 
   const renderDndContent = () => {
-    if (uploaded) { return <h4>¡Archivo cargado con éxito</h4> }
-    if (uploading) { return <h4>Subiendo archivo...</h4> }
+    if (uploaded) {
+      return <h4>¡Archivo cargado con éxito</h4>;
+    }
+    if (uploading) {
+      return <h4>Subiendo archivo...</h4>;
+    }
     if (isDragReject) return <h4>Archivo no soportado</h4>;
     if (isDragAccept) return <h4>¡Suelta el archivo para subirlo!</h4>;
 
@@ -56,13 +56,22 @@ export default function Upload() {
       </>
     );
   };
+  const handleSubmit = async evt => {
+    evt.preventDefault()
+    if (!uploaded) return
 
+    const description = evt.target.description.value
+    const [error] = await publishVideo({ videoSrc: uploaded, description })
+
+    if (error) return console.error(error)
+    else console.log('video published!!!')
+  }
   return (
     <div className={styles.upload}>
       <h1>Cargar Video</h1>
       <p>Este Video se publicara en el perfil de Harry_Dev</p>
 
-      <form className={styles.from}>
+      <form className={styles.from} onSubmit={handleSubmit}>
         <div {...getRootProps()}>
           <input {...getInputProps()} />
           <div className={dndClassNames}>
@@ -76,7 +85,7 @@ export default function Upload() {
 
         <label>
           leyendas
-          <input type="text" placeholder="" />
+          <input name="description" type="text" placeholder="" />
         </label>
         <button>Publicar</button>
       </form>

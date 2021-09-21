@@ -5,21 +5,14 @@ import VideosDescription from "../VideoDescription";
 import styles from "./styles.module.css";
 import VideosPleyerActions from "./VideosPleyerActions";
 
-export default function VideoPlayer({
-  src,
-  albumunCover,
-  username,
-  description,
-  songTitle,
-  avatar,
-}) {
+export default function VideoPlayer(props) {
   const video = useRef();
   const { playing, handlePlay } = useIntersectionVideoPlayer({ video });
 
   const playerCassName = clsx(styles.player, {
     [styles.hidden]: playing,
   });
-
+  const { src, albumunCover, username, description, songTitle, avatar } = props;
   return (
     <div className={styles.wrapper}>
       <video
@@ -31,13 +24,8 @@ export default function VideoPlayer({
         onClick={handlePlay}
       />
       <i className={playerCassName} onClick={handlePlay} />
-      <VideosPleyerActions avatar={avatar} username={username} />
-      <VideosDescription
-        albumunCover={albumunCover}
-        username={username}
-        description={description}
-        songTitle={songTitle}
-      />
+      <VideosPleyerActions {...props} />
+      <VideosDescription {...props}/>
     </div>
   );
 }
