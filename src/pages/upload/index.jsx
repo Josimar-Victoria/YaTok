@@ -8,12 +8,12 @@ export default function Upload() {
   const [uploaded, setUploaded] = useState(null);
 
   const onDrop = async (files) => {
-    const [ file ] = files
-    console.log(files);
-    setUploading(true);
-    await uploadVIdeo({videoFile: file});
-    setUploaded(true);
-
+    const [file] = files
+    setUploading(true)
+    const [error, fileUrl] = await uploadVIdeo({ videoFile: file })
+    if (error) return console.error(error)
+    console.log(fileUrl)
+    setUploaded(fileUrl)
   };
   const { 
       isDragAccept, 
